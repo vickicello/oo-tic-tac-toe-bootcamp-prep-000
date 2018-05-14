@@ -27,15 +27,15 @@ class TicTacToe
   end
 
   def move(index, token = "X")
-    board[index] = token
+    @board[index] = token
   end
 
-  def position_taken?(board, index)
-    !(board[index].nil? || board[index] == " ")
+  def position_taken?(@board, index)
+    !(@board[index].nil? || @board[index] == " ")
   end
 
-  def valid_move?(board, index)
-    if position_taken?(board, index)
+  def valid_move?(@board, index)
+    if position_taken?(@board, index)
       false
     elsif !(index.between?(0, 8))
       false
@@ -48,11 +48,11 @@ class TicTacToe
      puts "Please enter 1-9:"
      input = gets.strip
      index = input_to_index(input)
-     if valid_move?(board, index)
-       move(board, index, current_player(board))
-       display_board(board)
+     if valid_move?(@board, index)
+       move(@board, index, current_player(@board))
+       display_board(@board)
      else
-       turn(board)
+       turn(@board)
      end
   end
 
@@ -65,40 +65,40 @@ class TicTacToe
     turn_count % 2 == 0? "X" : "O"
   end
 
-  def won?(board)
-    winning_combos(board).first
+  def won?(@board)
+    winning_combos(@board).first
   end
 
-  def full?(board)
-    !board.any? do |board_position|
+  def full?(@board)
+    !@board.any? do |board_position|
      board_position == " "
    end
   end
 
-  def draw?(board)
-    full?(board) && !won?(board)
+  def draw?(@board)
+    full?(@board) && !won?(@board)
   end
 
-  def over?(board)
-    won?(board) || draw?(board) || full?(board)
+  def over?(@board)
+    won?(@board) || draw?(@board) || full?(@board)
   end
 
-  def winner(board)
-    winning_combination = won?(board)
+  def winner(@board)
+    winning_combination = won?(@board)
     if winning_combination == nil
        nil
-       elsif board[winning_combination[0]] == "X"
+     elsif @board[winning_combination[0]] == "X"
         "X"
      else
         "O"
      end
   end
 
-  def play(board)
-    until over?(board)
-    turn(board)
+  def play(@board)
+    until over?(@board)
+    turn(@board)
   end
-    letter = winner(board)
+    letter = winner(@board)
     if letter != nil
       puts "Congratulations #{letter}!"
     else
