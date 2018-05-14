@@ -87,7 +87,7 @@ class TicTacToe
   def winner
     if won?
     winning_combination = won?
-    if winning_combination.all? {|i| @board[i] =="X"} 
+    if winning_combination.all? {|i| @board[i] =="X"}
         "X"
      elsif winning_combination.all? {|i| @board[i] =="O"}
         "O"
