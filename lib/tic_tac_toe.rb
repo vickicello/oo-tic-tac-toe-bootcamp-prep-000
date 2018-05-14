@@ -58,7 +58,7 @@ class TicTacToe
 
   def turn_count
     @board.count{|token|
-    token == "X" || token == "O"
+    token == "X" || token == "O"}
   end
 
   def current_player
@@ -105,3 +105,4 @@ class TicTacToe
       puts "Cat's Game!"
     end
   end
+end
