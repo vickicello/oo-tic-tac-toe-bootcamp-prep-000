@@ -23,36 +23,30 @@ class TicTacToe
   end
 
   def input_to_index(input)
-  index = input.to_i - 1
+    input.to_i - 1
   end
 
-  def move(index, token = "X")
-    @board[index] = token
+  def move(index, current_player = "X")
+    @board[index] = current_player
   end
 
-  def position_taken?(@board, index)
-    !(@board[index].nil? || @board[index] == " ")
+  def position_taken?(location)
+    @board[location] != " " && @board[location] != ""
   end
 
-  def valid_move?(@board, index)
-    if position_taken?(@board, index)
-      false
-    elsif !(index.between?(0, 8))
-      false
-    else
-      true
-   end
+  def valid_move?(index)
+    index.between?(0,8) && !position_taken?(index)
   end
 
   def turn
      puts "Please enter 1-9:"
      input = gets.strip
      index = input_to_index(input)
-     if valid_move?(@board, index)
-       move(@board, index, current_player(@board))
-       display_board(@board)
+     if valid_move?(index)
+       move(index, current_player)
+       display_board
      else
-       turn(@board)
+       turn
      end
   end
 
@@ -65,44 +59,54 @@ class TicTacToe
     turn_count % 2 == 0? "X" : "O"
   end
 
-  def won?(@board)
-    winning_combos(@board).first
+  def won?
+    WIN_COMBINATIONS.each do |combination|
+       if combination.all? {|i| @board[i] == "X"} || combination.all? {|i| @board[i] == "O"}
+         combination
+       end
+     end
+     false
   end
 
-  def full?(@board)
-    !@board.any? do |board_position|
-     board_position == " "
+  def full?
+    @board.all? {|space| space == "X" || space =="O"}
    end
+
+  def draw?
+    if full? && !won?
+      true
+    else
+      false
+    end
   end
 
-  def draw?(@board)
-    full?(@board) && !won?(@board)
+  def over?
+    won? || draw? || full?
   end
 
-  def over?(@board)
-    won?(@board) || draw?(@board) || full?(@board)
-  end
-
-  def winner(@board)
-    winning_combination = won?(@board)
-    if winning_combination == nil
-       nil
-     elsif @board[winning_combination[0]] == "X"
+  def winner
+    if won?
+    winning_combination = won?
+    if winning_combination.all? {|i| @board[i] =="X"} 
         "X"
-     else
+     elsif winning_combination.all? {|i| @board[i] =="O"}
         "O"
      end
+   else
+     nil
   end
+end
 
-  def play(@board)
-    until over?(@board)
-    turn(@board)
+  def play
+    until over?
+    turn
   end
-    letter = winner(@board)
+    letter = winner
     if letter != nil
       puts "Congratulations #{letter}!"
     else
       puts "Cat's Game!"
     end
   end
+  
 end
